@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:dataframe:0.15.0")
     implementation("com.itextpdf:itext7-core:7.2.5")
     implementation(libs.dotenv.kotlin)
     implementation(libs.ktor.server.rabbitmq)

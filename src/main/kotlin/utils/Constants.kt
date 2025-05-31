@@ -15,5 +15,7 @@ object Constants {
     val fontBold: PdfFont = PdfFontFactory.createFont("Times-Bold")
     val whileColor = DeviceRgb(255, 255, 255) // Blanc
     val backgroundColor = DeviceRgb(182, 102, 210) // Violet
+    val backgroundBlue = DeviceRgb(0, 102, 204) // Bleu classique
+
 
 }
