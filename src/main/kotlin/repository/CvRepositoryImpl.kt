@@ -143,7 +143,7 @@ class CvRepositoryImpl : CvRepository {
         // Bande colorée en haut
         val headerBackground = Table(1)
             .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(0f)
+            .setMarginBottom(5f)
 
         val headerCell = Cell()
             .setBackgroundColor(primaryColor)
@@ -168,7 +168,7 @@ class CvRepositoryImpl : CvRepository {
             .setWidth(UnitValue.createPercentValue(100f))
             .setBackgroundColor(lightGray)
             .setPadding(5f)
-            .setMarginBottom(25f)
+            .setMarginBottom(5f)
 
         // Colonne 1 - Contact principal
         val contactCol1 = Cell()
@@ -219,7 +219,7 @@ class CvRepositoryImpl : CvRepository {
         // Boîte avec fond coloré pour le résumé
         val summaryBox = Table(1)
             .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(10f)
+            .setMarginBottom(5f)
 
         val summaryCell = Cell()
             .setBackgroundColor(lightGray)
@@ -245,7 +245,7 @@ class CvRepositoryImpl : CvRepository {
             // Conteneur pour une expérience
             val expContainer = Table(1)
                 .setWidth(UnitValue.createPercentValue(100f))
-                .setMarginBottom(15f)
+                .setMarginBottom(5f)
 
             val expCell = Cell()
                 .setBorder(SolidBorder(lightGray, 1f))
@@ -254,7 +254,7 @@ class CvRepositoryImpl : CvRepository {
             // En-tête de l'expérience avec fond coloré
             val headerTable = Table(UnitValue.createPercentArray(floatArrayOf(3f, 1f)))
                 .setWidth(UnitValue.createPercentValue(100f))
-                .setMarginBottom(10f)
+                .setMarginBottom(5f)
 
             val titleCell = Cell()
                 .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
@@ -330,7 +330,7 @@ class CvRepositoryImpl : CvRepository {
         educations.forEach { edu ->
             val eduContainer = Table(1)
                 .setWidth(UnitValue.createPercentValue(100f))
-                .setMarginBottom(12f)
+                .setMarginBottom(5f)
 
             val eduCell = Cell()
                 .setBorder(SolidBorder(lightGray, 1f))
@@ -385,7 +385,7 @@ class CvRepositoryImpl : CvRepository {
         // Section à deux colonnes
         val twoColumnTable = Table(UnitValue.createPercentArray(floatArrayOf(1f, 1f)))
             .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(20f)
+            .setMarginBottom(5f)
 
         // Colonne Compétences
         val skillsCell = Cell()
@@ -467,7 +467,7 @@ class CvRepositoryImpl : CvRepository {
         // Grille 2 colonnes
         val certGrid = Table(2)
             .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(20f)
+            .setMarginBottom(5f)
 
         certifications.chunked(2).forEach { chunk ->
             chunk.forEach { cert ->
@@ -524,7 +524,7 @@ class CvRepositoryImpl : CvRepository {
         // Grille 2 colonnes
         val projectGrid = Table(2)
             .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(20f)
+            .setMarginBottom(5f)
 
         projects.chunked(2).forEach { chunk ->
             chunk.forEach { project ->
