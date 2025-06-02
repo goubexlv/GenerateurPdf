@@ -1,5 +1,6 @@
 package com.daccvo.route
 
+import com.daccvo.Services.TemplateCv1
 import com.daccvo.models.domain.CVRequest
 import com.daccvo.repository.CvRepository
 import io.ktor.http.ContentType
@@ -15,27 +16,26 @@ import io.ktor.server.routing.post
 
 fun Route.generateCvsRoute(cvRepository: CvRepository){
 
-    get ("/generate"){
-        try {
-            cvRepository.initialisation()
-            call.respond(
-                status = HttpStatusCode.Created,
-                message = "good"
-            )
-        }catch (e : Exception){
-            e.printStackTrace()  // <-- Affiche toute l’exception dans la console/terminal
-            call.respond(
-                status = HttpStatusCode.BadRequest,
-                message = "Erreur : ${e.message}"
-            )
-        }
-    }
+//    get ("/generate"){
+//        try {
+//            cvRepository.initialisation()
+//            call.respond(
+//                status = HttpStatusCode.Created,
+//                message = "good"
+//            )
+//        }catch (e : Exception){
+//            e.printStackTrace()  // <-- Affiche toute l’exception dans la console/terminal
+//            call.respond(
+//                status = HttpStatusCode.BadRequest,
+//                message = "Erreur : ${e.message}"
+//            )
+//        }
+//    }
 
     post("/api/cv/generate") {
         try {
             val cvRequest = call.receive<CVRequest>()
-            cvRepository.generateCV(cvRequest)
-
+            cvRepository.initialisation(3,cvRequest)
             call.respond(HttpStatusCode.OK, mapOf("success" to "reusssi"))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to e.message))

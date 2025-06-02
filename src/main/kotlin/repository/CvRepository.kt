@@ -5,7 +5,6 @@ import com.itextpdf.layout.Document
 
 interface CvRepository {
 
-    suspend fun initialisation()
-    suspend fun creationdoc(path : String) : Document
-    suspend fun generateCV(cvRequest: CVRequest)
+    suspend fun initialisation(choixCv: Int, cvRequest: CVRequest)
+    //suspend fun creationdoc(path : String) : Document
 }
