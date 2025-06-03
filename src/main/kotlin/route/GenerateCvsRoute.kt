@@ -35,7 +35,7 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
     post("/api/cv/generate") {
         try {
             val cvRequest = call.receive<CVRequest>()
-            cvRepository.initialisation(3,cvRequest)
+            cvRepository.initialisation(4,cvRequest)
             call.respond(HttpStatusCode.OK, mapOf("success" to "reusssi"))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to e.message))
