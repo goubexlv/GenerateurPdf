@@ -13,6 +13,7 @@ import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import kotlin.text.get
 
 fun Route.generateCvsRoute(cvRepository: CvRepository){
 
@@ -33,9 +34,18 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
 //    }
 
     post("/api/cv/generate") {
+        val cv = call.parameters["cv"]
+        if (cv.isNullOrBlank()) {
+            call.respond(
+                HttpStatusCode.BadRequest,
+                mapOf("error" to "cv parameter is required")
+            )
+            return@post
+        }
+
         try {
             val cvRequest = call.receive<CVRequest>()
-            cvRepository.initialisation(4,cvRequest)
+            cvRepository.initialisation(cv.toInt(),cvRequest)
             call.respond(HttpStatusCode.OK, mapOf("success" to "reusssi"))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to e.message))
