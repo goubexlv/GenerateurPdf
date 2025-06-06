@@ -14,11 +14,14 @@ fun Application.configureRouting() {
     routing {
         val generatePdfRepository : GeneratePdfRepository by application.inject()
         val cvRepository : CvRepository by application.inject()
+        static("/uploads") {
+            files("uploads")
+        }
+
         rootRoute()
         generatePdfRoute(generatePdfRepository)
         generateCvsRoute(cvRepository)
         // Static plugin. Try to access `/static/index.html`
-        staticResources("/pdfgenerer", "pdfgenerer")
 
     }
 }

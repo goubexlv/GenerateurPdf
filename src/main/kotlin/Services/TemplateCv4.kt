@@ -33,7 +33,7 @@ class TemplateCv4 {
     private lateinit var boldFont: PdfFont
     private lateinit var pdfDocument: PdfDocument
 
-    fun generateCV(cvRequest: CVRequest) {
+    fun generateCV(cvRequest: CVRequest,image : String) {
         val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_Modern.pdf"
 
         val outputFile = File(outputPath)
@@ -53,7 +53,7 @@ class TemplateCv4 {
         val imgSrc = "images/tayc.png"
 
         // Créer l'en-tête avec design géométrique
-        createHeader(document, cvRequest.personalInfo, imgSrc)
+        createHeader(document, cvRequest.personalInfo, image)
 
         // Créer le contenu principal
         createMainContent(document, cvRequest)
@@ -79,7 +79,7 @@ class TemplateCv4 {
         // Créer un div avec fond bleu
         val leftDiv = Div()
         leftDiv.setHeight(200f)
-        leftDiv.setBackgroundColor(darkBlueColor)
+        //leftDiv.setBackgroundColor(darkBlueColor)
 
         // Ajouter la photo si fournie
         photoPath?.let { path ->
@@ -87,10 +87,11 @@ class TemplateCv4 {
                 if (File(path).exists()) {
                     val imageData = ImageDataFactory.create(path)
                     val image = Image(imageData)
-                    image.setWidth(80f)
-                    image.setHeight(100f)
-                    image.setMarginLeft(20f)
-                    image.setMarginTop(50f)
+                    image.setHeight(150f)
+                    image.setWidth(150f)
+                    image.setMarginTop(20f)
+                    image.setMarginLeft(0f)
+                    image.setHorizontalAlignment(HorizontalAlignment.CENTER)
                     leftDiv.add(image)
                 }
             } catch (e: Exception) {

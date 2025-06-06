@@ -39,7 +39,7 @@ class TemplateCv2 {
     private val regularFont: PdfFont by lazy { PdfFontFactory.createFont() }
     private val boldFont: PdfFont by lazy { PdfFontFactory.createFont() }
 
-    suspend fun generateCV(cvRequest: CVRequest) {
+    suspend fun generateCV(cvRequest: CVRequest, image : String) {
         val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_Photo.pdf"
 
         val outputFile = File(outputPath)
@@ -53,12 +53,12 @@ class TemplateCv2 {
         document.setMargins(0f, 0f, 0f, 0f) // Pas de marges pour le layout à deux colonnes
 
         // Layout principal à deux colonnes
-        createTwoColumnLayout(document, cvRequest)
+        createTwoColumnLayout(document, cvRequest,image)
 
         document.close()
     }
 
-    private fun createTwoColumnLayout(document: Document, cvRequest: CVRequest) {
+    private fun createTwoColumnLayout(document: Document, cvRequest: CVRequest, image : String) {
         // Table principale avec 2 colonnes (35% - 65%)
         val mainTable = Table(UnitValue.createPercentArray(floatArrayOf(35f, 65f)))
             .setWidth(UnitValue.createPercentValue(100f))
@@ -71,7 +71,7 @@ class TemplateCv2 {
             .setPadding(25f)
             .setHeight(UnitValue.createPointValue(842f)) // Hauteur A4
 
-        addSidebarContent(leftColumn, cvRequest.personalInfo, cvRequest.skills, cvRequest.languages)
+        addSidebarContent(leftColumn, cvRequest.personalInfo, cvRequest.skills, cvRequest.languages,image)
 
         // Colonne droite (contenu principal)
         val rightColumn = Cell()
@@ -91,11 +91,12 @@ class TemplateCv2 {
         sidebarCell: Cell,
         personalInfo: PersonalInfo,
         skills: List<String>,
-        languages: List<Language>
+        languages: List<Language>,
+        image : String
     ) {
 
         val imgSrc = "images/tayc.png"
-        val imageData = ImageDataFactory.create(imgSrc)
+        val imageData = ImageDataFactory.create(image)
         val image = Image(imageData)
             .scaleToFit(80f, 120f) // adapte la taille
             .setHorizontalAlignment(HorizontalAlignment.CENTER)

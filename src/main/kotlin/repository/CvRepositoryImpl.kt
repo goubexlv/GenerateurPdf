@@ -16,13 +16,13 @@ class CvRepositoryImpl(
     private val templateCv4: TemplateCv4
 ) : CvRepository {
 
-   override suspend fun initialisation(cv: Int, cvRequest: CVRequest) {
+   override suspend fun initialisation(cv: Int, cvRequest: CVRequest,image : String) {
 
        when(cv){
            1 -> templateCv1.generateCV(cvRequest)
-           2 -> templateCv2.generateCV(cvRequest)
-           3 -> templateCv3.generateCV(cvRequest)
-           4 -> templateCv4.generateCV(cvRequest)
+           2 -> templateCv2.generateCV(cvRequest,image)
+           3 -> templateCv3.generateCV(cvRequest,image)
+           4 -> templateCv4.generateCV(cvRequest,image)
            else -> "null"
        }
 

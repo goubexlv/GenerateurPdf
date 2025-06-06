@@ -51,7 +51,7 @@ class TemplateCv3 {
     private val regularFont: PdfFont by lazy { PdfFontFactory.createFont(StandardFonts.HELVETICA) }
     private val boldFont: PdfFont by lazy { PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD) }
 
-    suspend fun generateCV(cvRequest: CVRequest) {
+    suspend fun generateCV(cvRequest: CVRequest, image : String) {
         val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_Modern.pdf"
 
         val outputFile = File(outputPath)
@@ -65,12 +65,12 @@ class TemplateCv3 {
         document.setMargins(0f, 0f, 0f, 0f)
 
         // Layout principal à deux colonnes exactement comme la photo
-        createModernTwoColumnLayout(document, cvRequest)
+        createModernTwoColumnLayout(document, cvRequest,image)
 
         document.close()
     }
 
-    private fun createModernTwoColumnLayout(document: Document, cvRequest: CVRequest) {
+    private fun createModernTwoColumnLayout(document: Document, cvRequest: CVRequest, image : String) {
         // Table principale avec proportions exactes de la photo (35% - 65%)
         val mainTable = Table(UnitValue.createPercentArray(floatArrayOf(35f, 65f)))
             .setWidth(UnitValue.createPercentValue(100f))
@@ -83,7 +83,7 @@ class TemplateCv3 {
             .setPadding(25f)
             .setHeight(UnitValue.createPointValue(842f))
 
-        addModernSidebarContent(leftColumn, cvRequest)
+        addModernSidebarContent(leftColumn, cvRequest,image)
 
         // Colonne droite (contenu principal comme la photo)
         val rightColumn = Cell()
@@ -99,9 +99,9 @@ class TemplateCv3 {
         document.add(mainTable)
     }
 
-    private fun addModernSidebarContent(sidebarCell: Cell, cvRequest: CVRequest) {
+    private fun addModernSidebarContent(sidebarCell: Cell, cvRequest: CVRequest, image : String) {
         // Photo de profil circulaire comme dans la photo
-        addProfilePhoto(sidebarCell, cvRequest.personalInfo)
+        addProfilePhoto(sidebarCell, cvRequest.personalInfo,image)
 
         // Nom et titre professionnel centrés
         addNameAndTitle(sidebarCell, cvRequest.personalInfo)
@@ -119,7 +119,7 @@ class TemplateCv3 {
         addLanguagesSection(sidebarCell, cvRequest.languages)
     }
 
-    private fun addProfilePhoto(sidebarCell: Cell, personalInfo: PersonalInfo) {
+    private fun addProfilePhoto(sidebarCell: Cell, personalInfo: PersonalInfo, image : String) {
         val photoTable = Table(1)
             .setWidth(UnitValue.createPercentValue(100f))
             .setMarginBottom(20f)
@@ -132,7 +132,7 @@ class TemplateCv3 {
 
         try {
             val imgSrc = "images/tayc.png"
-            val imageData = ImageDataFactory.create(imgSrc)
+            val imageData = ImageDataFactory.create(image)
             val image = Image(imageData)
                 .scaleToFit(80f, 120f)
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)

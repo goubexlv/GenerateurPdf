@@ -6,13 +6,19 @@ import com.daccvo.repository.CvRepository
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
+import io.ktor.http.content.streamProvider
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import kotlinx.serialization.json.Json
+import java.io.File
 import kotlin.text.get
 
 fun Route.generateCvsRoute(cvRepository: CvRepository){
@@ -34,6 +40,40 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
 //    }
 
     post("/api/cv/generate") {
+        val multipart = call.receiveMultipart()
+        var cvRequestJson: String? = null
+        var image: String? = null
+
+        multipart.forEachPart { part ->
+            when (part) {
+                is PartData.FileItem -> {
+                    val originalFileName = part.originalFileName ?: "file_${System.currentTimeMillis()}.jpg"
+                    val fileBytes = part.streamProvider().readBytes()
+
+                    val folder = File("uploads/cv")
+                    folder.mkdirs()
+
+                    val fileName = "${System.currentTimeMillis()}_$originalFileName"
+                    val file = folder.resolve(fileName)
+
+                    file.writeBytes(fileBytes)
+
+                    // Chemin relatif pour accès web
+                    image = "uploads/cv/$fileName"
+                }
+
+                is PartData.FormItem -> {
+                    if (part.name == "cvRequest") {
+                        cvRequestJson = part.value
+                    }
+                }
+
+                else -> {}
+            }
+
+            part.dispose()
+        }
+
         val cv = call.parameters["cv"]
         if (cv.isNullOrBlank()) {
             call.respond(
@@ -43,14 +83,22 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
             return@post
         }
 
+        if (cvRequestJson == null) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "cvRequest JSON is required in multipart form-data"))
+            return@post
+        }
+
         try {
-            val cvRequest = call.receive<CVRequest>()
-            cvRepository.initialisation(cv.toInt(),cvRequest)
-            call.respond(HttpStatusCode.OK, mapOf("success" to "reusssi"))
+            val cvRequest = Json.decodeFromString<CVRequest>(cvRequestJson!!)
+            val imagePath = image ?: "images/tayc.png"
+            cvRepository.initialisation(cv.toInt(), cvRequest, imagePath)
+
+            call.respond(HttpStatusCode.OK, mapOf("success" to "réussi", "image" to imagePath))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to e.message))
         }
     }
+
 
     get("/api/health") {
         call.respond(mapOf("status" to "OK", "service" to "CV Generator"))
