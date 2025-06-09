@@ -5,6 +5,7 @@ import com.daccvo.models.domain.Education
 import com.daccvo.models.domain.Experience
 import com.daccvo.models.domain.Language
 import com.daccvo.models.domain.PersonalInfo
+import com.daccvo.utils.hexToDeviceRgb
 import com.itextpdf.io.font.constants.StandardFonts
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.DeviceRgb
@@ -23,10 +24,10 @@ import java.io.File
 class TemplateCv4 {
 
     // Couleurs du design
-    private val redColor = DeviceRgb(183, 58, 58)      // Rouge principal
-    private val darkBlueColor = DeviceRgb(47, 54, 64)  // Bleu foncé
-    private val grayColor = DeviceRgb(128, 128, 128)   // Gris pour le texte
-    private val lightGrayColor = DeviceRgb(240, 240, 240) // Gris clair pour fond
+    private val redColor = hexToDeviceRgb("#B73A3A")     // Rouge principal
+    private val darkBlueColor = hexToDeviceRgb("#2F3640")// Bleu foncé
+    private val grayColor = hexToDeviceRgb("#808080")   // Gris pour le texte
+    private val lightGrayColor = hexToDeviceRgb("#F0F0F0") // Gris clair pour fond
 
     // Polices
     private lateinit var regularFont: PdfFont

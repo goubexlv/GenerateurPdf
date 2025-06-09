@@ -40,7 +40,7 @@ class TemplateCv2 {
     private val boldFont: PdfFont by lazy { PdfFontFactory.createFont() }
 
     suspend fun generateCV(cvRequest: CVRequest, image : String) {
-        val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_Photo.pdf"
+        val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_cv2.pdf"
 
         val outputFile = File(outputPath)
         outputFile.parentFile?.mkdirs()
@@ -98,7 +98,7 @@ class TemplateCv2 {
         val imgSrc = "images/tayc.png"
         val imageData = ImageDataFactory.create(image)
         val image = Image(imageData)
-            .scaleToFit(80f, 120f) // adapte la taille
+            .scaleToFit(150f, 150f) // adapte la taille
             .setHorizontalAlignment(HorizontalAlignment.CENTER)
 
 // Table contenant l'image
