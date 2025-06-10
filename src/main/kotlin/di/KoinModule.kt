@@ -8,14 +8,16 @@ import com.daccvo.repository.CvRepository
 import com.daccvo.repository.CvRepositoryImpl
 import com.daccvo.repository.GeneratePdfRepository
 import com.daccvo.repository.GeneratePdfRepositoryImpl
+import com.itextpdf.kernel.colors.DeviceRgb
 import org.koin.dsl.module
 
 val KoinModule = module {
     single<GeneratePdfRepository> { GeneratePdfRepositoryImpl() }
-    single<CvRepository> { CvRepositoryImpl(get(),get(),get(),get() ) }
+    single<CvRepository> { CvRepositoryImpl(get(),get(),get() ) }
     single { TemplateCv1() }
     single { TemplateCv2() }
     single { TemplateCv3() }
-    single { TemplateCv4() }
+
+
 
 }

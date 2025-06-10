@@ -1,25 +1,19 @@
 package com.daccvo.route
 
-import com.daccvo.Services.TemplateCv1
 import com.daccvo.models.domain.CVRequest
+import com.daccvo.models.domain.CvColors
 import com.daccvo.repository.CvRepository
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
 import io.ktor.http.content.streamProvider
-import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
-import io.ktor.server.response.header
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import kotlinx.serialization.json.Json
 import java.io.File
-import kotlin.text.get
 
 fun Route.generateCvsRoute(cvRepository: CvRepository){
 
@@ -75,6 +69,12 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
         }
 
         val cv = call.parameters["cv"]
+        val colors = CvColors(
+            colorPrincipal = call.request.queryParameters["red"] ?: "#B73A3A",
+            sectionBackground = call.request.queryParameters["darkBlue"] ?: "#2F3640",
+            textColor = call.request.queryParameters["gray"] ?: "#808080",
+            sidebarColor = call.request.queryParameters["lightGray"] ?: "#F0F0F0"
+        )
         if (cv.isNullOrBlank()) {
             call.respond(
                 HttpStatusCode.BadRequest,
@@ -91,7 +91,7 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
         try {
             val cvRequest = Json.decodeFromString<CVRequest>(cvRequestJson!!)
             val imagePath = image ?: "images/tayc.png"
-            cvRepository.initialisation(cv.toInt(), cvRequest, imagePath)
+            cvRepository.initialisation(cv.toInt(), cvRequest, imagePath,colors)
 
             call.respond(HttpStatusCode.OK, mapOf("success" to "réussi", "image" to imagePath))
         } catch (e: Exception) {

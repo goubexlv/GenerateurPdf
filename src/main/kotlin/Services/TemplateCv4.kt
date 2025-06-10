@@ -5,7 +5,6 @@ import com.daccvo.models.domain.Education
 import com.daccvo.models.domain.Experience
 import com.daccvo.models.domain.Language
 import com.daccvo.models.domain.PersonalInfo
-import com.daccvo.utils.hexToDeviceRgb
 import com.itextpdf.io.font.constants.StandardFonts
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.DeviceRgb
@@ -21,13 +20,17 @@ import com.itextpdf.layout.element.*
 import com.itextpdf.layout.properties.*
 import java.io.File
 
-class TemplateCv4 {
+class TemplateCv4(
+    private val colorPrincipal: DeviceRgb,
+    private val textColor: DeviceRgb,
+    private val sidebarColor: DeviceRgb
+) {
 
     // Couleurs du design
-    private val redColor = hexToDeviceRgb("#B73A3A")     // Rouge principal
-    private val darkBlueColor = hexToDeviceRgb("#2F3640")// Bleu foncé
-    private val grayColor = hexToDeviceRgb("#808080")   // Gris pour le texte
-    private val lightGrayColor = hexToDeviceRgb("#F0F0F0") // Gris clair pour fond
+//    private val redColor = hexToDeviceRgb("#B73A3A")     // Rouge principal
+//    private val darkBlueColor = hexToDeviceRgb("#2F3640")// Bleu foncé
+//    private val grayColor = hexToDeviceRgb("#808080")   // Gris pour le texte
+//    private val lightGrayColor = hexToDeviceRgb("#F0F0F0") // Gris clair pour fond
 
     // Polices
     private lateinit var regularFont: PdfFont
@@ -118,7 +121,7 @@ class TemplateCv4 {
         val jobTitle = Paragraph("DÉVELOPPEUR")
             .setFont(regularFont)
             .setFontSize(14f)
-            .setFontColor(grayColor)
+            .setFontColor(textColor)
             .setMarginBottom(20f)
         rightCell.add(jobTitle)
 
@@ -126,7 +129,7 @@ class TemplateCv4 {
             val summaryParagraph = Paragraph(summary)
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(grayColor)
+                .setFontColor(textColor)
                 .setTextAlignment(TextAlignment.JUSTIFIED)
             rightCell.add(summaryParagraph)
         }
@@ -156,7 +159,7 @@ class TemplateCv4 {
 
         pdfCanvas
             .saveState()
-            .setFillColor(redColor)
+            .setFillColor(colorPrincipal)
             .moveTo(triangleX, triangleY.toDouble())
             .lineTo(triangleX - triangleSize, triangleY.toDouble())
             .lineTo(triangleX, triangleY - triangleSize)
@@ -204,7 +207,7 @@ class TemplateCv4 {
         val leftColumn = Cell()
         leftColumn.setBorder(Border.NO_BORDER)
         leftColumn.setPadding(20f)
-        leftColumn.setBackgroundColor(lightGrayColor)
+        leftColumn.setBackgroundColor(sidebarColor)
 
         createProfileSection(leftColumn, cvRequest.personalInfo)
         createSkillsSection(leftColumn, cvRequest.skills)
@@ -265,7 +268,7 @@ class TemplateCv4 {
         val valueParagraph = Paragraph(value)
         valueParagraph.setFont(regularFont)
         valueParagraph.setFontSize(9f)
-        valueParagraph.setFontColor(grayColor)
+        valueParagraph.setFontColor(textColor)
         valueParagraph.setMarginBottom(10f)
         cell.add(valueParagraph)
     }
@@ -314,7 +317,7 @@ class TemplateCv4 {
         val experienceTitle = Paragraph("EXPÉRIENCES PROFESSIONNELLES")
         experienceTitle.setFont(boldFont)
         experienceTitle.setFontSize(14f)
-        experienceTitle.setFontColor(redColor)
+        experienceTitle.setFontColor(colorPrincipal)
         experienceTitle.setMarginBottom(20f)
         cell.add(experienceTitle)
 
@@ -323,7 +326,7 @@ class TemplateCv4 {
             val dates = Paragraph("${experience.startDate} - ${experience.endDate}")
             dates.setFont(regularFont)
             dates.setFontSize(10f)
-            dates.setFontColor(grayColor)
+            dates.setFontColor(textColor)
             dates.setMarginBottom(2f)
             cell.add(dates)
 
@@ -339,7 +342,7 @@ class TemplateCv4 {
                 val descParagraph = Paragraph(desc)
                 descParagraph.setFont(regularFont)
                 descParagraph.setFontSize(10f)
-                descParagraph.setFontColor(grayColor)
+                descParagraph.setFontColor(textColor)
                 descParagraph.setTextAlignment(TextAlignment.JUSTIFIED)
                 descParagraph.setMarginBottom(3f)
                 cell.add(descParagraph)
@@ -350,7 +353,7 @@ class TemplateCv4 {
                 val techParagraph = Paragraph("Technologies: ${experience.technologies.joinToString(", ")}")
                 techParagraph.setFont(regularFont)
                 techParagraph.setFontSize(9f)
-                techParagraph.setFontColor(grayColor)
+                techParagraph.setFontColor(textColor)
                 techParagraph.setItalic()
                 techParagraph.setMarginBottom(15f)
                 cell.add(techParagraph)
@@ -368,7 +371,7 @@ class TemplateCv4 {
         val educationTitle = Paragraph("FORMATIONS")
         educationTitle.setFont(boldFont)
         educationTitle.setFontSize(14f)
-        educationTitle.setFontColor(redColor)
+        educationTitle.setFontColor(colorPrincipal)
         educationTitle.setMarginBottom(20f)
         educationTitle.setMarginTop(20f)
         cell.add(educationTitle)
@@ -378,7 +381,7 @@ class TemplateCv4 {
             val dates = Paragraph("${education.startDate} - ${education.endDate}")
             dates.setFont(regularFont)
             dates.setFontSize(10f)
-            dates.setFontColor(grayColor)
+            dates.setFontColor(textColor)
             dates.setMarginBottom(2f)
             cell.add(dates)
 
@@ -393,7 +396,7 @@ class TemplateCv4 {
             val institution = Paragraph(education.institution.uppercase())
             institution.setFont(regularFont)
             institution.setFontSize(10f)
-            institution.setFontColor(grayColor)
+            institution.setFontColor(textColor)
             institution.setMarginBottom(5f)
             cell.add(institution)
 
@@ -402,7 +405,7 @@ class TemplateCv4 {
                 val descParagraph = Paragraph(desc)
                 descParagraph.setFont(regularFont)
                 descParagraph.setFontSize(10f)
-                descParagraph.setFontColor(grayColor)
+                descParagraph.setFontColor(textColor)
                 descParagraph.setTextAlignment(TextAlignment.JUSTIFIED)
                 descParagraph.setMarginBottom(15f)
                 cell.add(descParagraph)

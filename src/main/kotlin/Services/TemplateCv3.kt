@@ -1,16 +1,10 @@
 package com.daccvo.Services
 
 import com.daccvo.models.domain.CVRequest
-import com.daccvo.models.domain.Certification
 import com.daccvo.models.domain.Education
 import com.daccvo.models.domain.Experience
 import com.daccvo.models.domain.Language
 import com.daccvo.models.domain.PersonalInfo
-import com.daccvo.models.domain.Project
-import com.daccvo.utils.Constants.backgroundBlue
-import com.daccvo.utils.Constants.fontBold
-import com.daccvo.utils.Constants.taille
-import com.daccvo.utils.Constants.whileColor
 import com.itextpdf.io.font.constants.StandardFonts
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.geom.PageSize
@@ -34,18 +28,16 @@ import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.font.PdfFont
 import com.itextpdf.kernel.font.PdfFontFactory
 import com.itextpdf.layout.borders.Border
-import com.itextpdf.layout.borders.SolidBorder
-import com.itextpdf.layout.element.List as ITextList
-import com.itextpdf.layout.element.ListItem as ITextListItem
 
-class TemplateCv3 {
+class TemplateCv3(
+    private val textColorSecondary: DeviceRgb,
+    private val sectionBackground: DeviceRgb,
+    private val textColor: DeviceRgb,
+    private val sidebarColor: DeviceRgb
+) {
+
     // Couleurs exactes du template de la photo
-    private val sidebarColor = DeviceRgb(44, 62, 80)      // Bleu-gris foncé sidebar
-    private val primaryColor = DeviceRgb(52, 152, 219)    // Bleu pour les barres de compétences
-    private val accentColor = DeviceRgb(149, 165, 166)    // Gris clair pour les textes secondaires
-    private val lightBackground = DeviceRgb(236, 240, 241) // Gris clair pour les titres de section
-    private val textDark = DeviceRgb(44, 62, 80)          // Texte foncé principal
-    private val iconColor = DeviceRgb(52, 152, 219)       // Couleur des icônes
+    //private val iconColor = DeviceRgb(52, 152, 219)       // Couleur des icônes
 
     private val headerFont: PdfFont by lazy { PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD) }
     private val regularFont: PdfFont by lazy { PdfFontFactory.createFont(StandardFonts.HELVETICA) }
@@ -144,7 +136,7 @@ class TemplateCv3 {
             val placeholder = Paragraph("👤")
                 .setFont(regularFont)
                 .setFontSize(60f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setTextAlignment(TextAlignment.CENTER)
             photoCell.add(placeholder)
         }
@@ -170,7 +162,7 @@ class TemplateCv3 {
         val jobTitle = Paragraph("BIOLOGISTE")
             .setFont(regularFont)
             .setFontSize(12f)
-            .setFontColor(accentColor)
+            .setFontColor(textColorSecondary)
             .setTextAlignment(TextAlignment.CENTER)
             .setMarginBottom(25f)
             .setCharacterSpacing(1f)
@@ -184,7 +176,7 @@ class TemplateCv3 {
             .setHorizontalAlignment(HorizontalAlignment.CENTER)
 
         val separatorCell = Cell()
-            .setBackgroundColor(accentColor)
+            .setBackgroundColor(textColorSecondary)
             .setBorder(Border.NO_BORDER)
             .setHeight(UnitValue.createPointValue(2f))
 
@@ -247,39 +239,6 @@ class TemplateCv3 {
         }
     }
 
-    private fun addSkillWithProgressBar(sidebarCell: Cell, skillName: String, level: Int) {
-        // Nom de la compétence
-        val skillText = Paragraph(skillName.uppercase())
-            .setFont(regularFont)
-            .setFontSize(9f)
-            .setFontColor(ColorConstants.WHITE)
-            .setMarginBottom(4f)
-        sidebarCell.add(skillText)
-
-        // Barre de progression
-        val progressBarContainer = Table(UnitValue.createPercentArray(floatArrayOf(level.toFloat(), (100 - level).toFloat())))
-            .setWidth(UnitValue.createPercentValue(100f))
-            .setMarginBottom(12f)
-
-        // Partie remplie de la barre
-        val filledPart = Cell()
-            .setBackgroundColor(primaryColor)
-            .setBorder(Border.NO_BORDER)
-            .setHeight(UnitValue.createPointValue(8f))
-
-        // Partie vide de la barre
-        val emptyPart = Cell()
-            .setBackgroundColor(DeviceRgb(52, 73, 94)) // Plus foncé que la sidebar
-            .setBorder(Border.NO_BORDER)
-            .setHeight(UnitValue.createPointValue(8f))
-
-        progressBarContainer.addCell(filledPart)
-        if (level < 100) {
-            progressBarContainer.addCell(emptyPart)
-        }
-
-        sidebarCell.add(progressBarContainer)
-    }
 
     private fun addLanguagesSection(sidebarCell: Cell, languages: List<Language>) {
         // Titre de section
@@ -315,7 +274,7 @@ class TemplateCv3 {
             .setFont(headerFont)
             .setFontSize(28f)
             .setBold()
-            .setFontColor(textDark)
+            .setFontColor(textColor)
             .setMarginBottom(25f)
         mainCell.add(headerName)
 
@@ -341,8 +300,8 @@ class TemplateCv3 {
             .setFont(boldFont)
             .setFontSize(14f)
             .setBold()
-            .setFontColor(textDark)
-            .setBackgroundColor(lightBackground)
+            .setFontColor(textColor)
+            .setBackgroundColor(sectionBackground)
             .setPadding(8f)
             .setPaddingLeft(10f)
             .setMarginTop(20f)
@@ -389,7 +348,8 @@ class TemplateCv3 {
             .add(Paragraph("📍")
                 .setFont(regularFont)
                 .setFontSize(12f)
-                .setFontColor(iconColor))
+                //.setFontColor(iconColor)
+            )
 
         // Contenu
         val contentCell = Cell()
@@ -398,12 +358,12 @@ class TemplateCv3 {
                 .setFont(boldFont)
                 .setFontSize(12f)
                 .setBold()
-                .setFontColor(textDark)
+                .setFontColor(textColor)
                 .setMarginBottom(3f))
             .add(Paragraph("$period | $institution")
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setItalic())
 
         educationContainer.addCell(iconCell)
@@ -443,7 +403,8 @@ class TemplateCv3 {
             .add(Paragraph("📍")
                 .setFont(regularFont)
                 .setFontSize(12f)
-                .setFontColor(iconColor))
+                //.setFontColor(iconColor)
+            )
 
         // Contenu
         val contentCell = Cell()
@@ -452,12 +413,12 @@ class TemplateCv3 {
                 .setFont(boldFont)
                 .setFontSize(12f)
                 .setBold()
-                .setFontColor(textDark)
+                .setFontColor(textColor)
                 .setMarginBottom(3f))
             .add(Paragraph("$period | $company")
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setItalic()
                 .setMarginBottom(8f))
 
@@ -504,7 +465,7 @@ class TemplateCv3 {
             .add(Paragraph("👤")
                 .setFont(regularFont)
                 .setFontSize(24f)
-                .setFontColor(accentColor))
+                .setFontColor(textColorSecondary))
 
         // Info référent
         val infoCell = Cell()
@@ -513,29 +474,29 @@ class TemplateCv3 {
                 .setFont(boldFont)
                 .setFontSize(10f)
                 .setBold()
-                .setFontColor(textDark)
+                .setFontColor(textColor)
                 .setMarginBottom(2f))
             .add(Paragraph(title)
                 .setFont(regularFont)
                 .setFontSize(9f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setItalic()
                 .setMarginBottom(1f))
             .add(Paragraph(company)
                 .setFont(regularFont)
                 .setFontSize(9f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setItalic()
                 .setMarginBottom(3f))
             .add(Paragraph(phone)
                 .setFont(regularFont)
                 .setFontSize(8f)
-                .setFontColor(accentColor)
+                .setFontColor(textColorSecondary)
                 .setMarginBottom(1f))
             .add(Paragraph(email)
                 .setFont(regularFont)
                 .setFontSize(8f)
-                .setFontColor(accentColor))
+                .setFontColor(textColorSecondary))
 
         refContainer.addCell(avatarCell)
         refContainer.addCell(infoCell)
