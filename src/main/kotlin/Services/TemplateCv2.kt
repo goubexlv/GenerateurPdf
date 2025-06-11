@@ -26,14 +26,18 @@ import com.itextpdf.layout.properties.VerticalAlignment
 import java.io.File
 import kotlin.collections.forEach
 
-class TemplateCv2 {
+class TemplateCv2(
+    private val colorPrincipal: DeviceRgb,
+    private val textColor: DeviceRgb,
+    private val sidebarColor: DeviceRgb
+) {
 
     // Couleurs du template moderne avec sidebar
-    private val sidebarColor = DeviceRgb(44, 62, 80)      // Bleu-gris foncé
-    private val primaryColor = DeviceRgb(52, 152, 219)    // Bleu moderne
-    private val accentColor = DeviceRgb(149, 165, 166)    // Gris clair
-    private val lightBackground = DeviceRgb(245, 245, 245) // Gris très clair
-    private val textDark = DeviceRgb(44, 62, 80)          // Texte foncé
+//    private val sidebarColor = DeviceRgb(44, 62, 80)      // Bleu-gris foncé
+//    private val primaryColor = DeviceRgb(52, 152, 219)    // Bleu moderne
+//    private val colorPrincipal = DeviceRgb(149, 165, 166)    // Gris clair
+//    private val lightBackground = DeviceRgb(245, 245, 245) // Gris très clair
+//    private val textColor = DeviceRgb(44, 62, 80)          // Texte foncé
 
     private val headerFont: PdfFont by lazy { PdfFontFactory.createFont() }
     private val regularFont: PdfFont by lazy { PdfFontFactory.createFont() }
@@ -131,7 +135,7 @@ class TemplateCv2 {
             .setFont(regularFont)
             .setFontSize(12f)
             .setItalic()
-            .setFontColor(accentColor)
+            .setFontColor(colorPrincipal)
             .setTextAlignment(TextAlignment.CENTER)
             .setMarginBottom(25f)
         sidebarCell.add(jobTitle)
@@ -143,7 +147,7 @@ class TemplateCv2 {
             .setHorizontalAlignment(HorizontalAlignment.CENTER)
 
         val separatorCell = Cell()
-            .setBackgroundColor(accentColor)
+            .setBackgroundColor(colorPrincipal)
             .setBorder(Border.NO_BORDER)
             .setHeight(UnitValue.createPointValue(2f))
 
@@ -204,7 +208,7 @@ class TemplateCv2 {
             .setFont(headerFont)
             .setFontSize(28f)
             .setBold()
-            .setFontColor(textDark)
+            .setFontColor(textColor)
             .setMarginBottom(5f)
         mainCell.add(headerName)
 
@@ -239,7 +243,7 @@ class TemplateCv2 {
             .setFont(boldFont)
             .setFontSize(14f)
             .setBold()
-            .setFontColor(textDark)
+            .setFontColor(textColor)
             .setMarginTop(15f)
             .setMarginBottom(10f)
         mainCell.add(sectionTitle)
@@ -280,12 +284,12 @@ class TemplateCv2 {
                 .setFont(boldFont)
                 .setFontSize(11f)
                 .setBold()
-                .setFontColor(textDark)
+                .setFontColor(textColor)
                 .setMarginBottom(2f))
             .add(Paragraph(institution)
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor)
+                .setFontColor(colorPrincipal)
                 .setItalic())
 
         val dateCell = Cell()
@@ -294,7 +298,7 @@ class TemplateCv2 {
             .add(Paragraph(dates)
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor))
+                .setFontColor(colorPrincipal))
 
         eduTable.addCell(contentCell)
         eduTable.addCell(dateCell)
@@ -349,12 +353,12 @@ class TemplateCv2 {
                 .setFont(boldFont)
                 .setFontSize(12f)
                 .setBold()
-                .setFontColor(textDark)
+                .setFontColor(textColor)
                 .setMarginBottom(2f))
             .add(Paragraph(company)
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor)
+                .setFontColor(colorPrincipal)
                 .setItalic())
 
         val dateCell = Cell()
@@ -363,7 +367,7 @@ class TemplateCv2 {
             .add(Paragraph(dates)
                 .setFont(regularFont)
                 .setFontSize(10f)
-                .setFontColor(accentColor))
+                .setFontColor(colorPrincipal))
 
         expTable.addCell(contentCell)
         expTable.addCell(dateCell)
