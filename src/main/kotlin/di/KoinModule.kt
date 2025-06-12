@@ -13,9 +13,6 @@ import org.koin.dsl.module
 
 val KoinModule = module {
     single<GeneratePdfRepository> { GeneratePdfRepositoryImpl() }
-    single<CvRepository> { CvRepositoryImpl(get(),get()) }
+    single<CvRepository> { CvRepositoryImpl(get()) }
     single { TemplateCv1() }
-    single { TemplateCv2() }
-
-
 }

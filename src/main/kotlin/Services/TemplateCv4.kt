@@ -38,7 +38,7 @@ class TemplateCv4(
     private lateinit var pdfDocument: PdfDocument
 
     fun generateCV(cvRequest: CVRequest,image : String) {
-        val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_Modern.pdf"
+        val outputPath = "pdfgenerer/${cvRequest.personalInfo.lastName}_${cvRequest.personalInfo.firstName}_cv4.pdf"
 
         val outputFile = File(outputPath)
         outputFile.parentFile?.mkdirs()

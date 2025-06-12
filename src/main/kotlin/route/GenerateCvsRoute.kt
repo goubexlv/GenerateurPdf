@@ -70,10 +70,11 @@ fun Route.generateCvsRoute(cvRepository: CvRepository){
 
         val cv = call.parameters["cv"]
         val colors = CvColors(
-            colorPrincipal = call.request.queryParameters["red"] ?: "#B73A3A",
-            sectionBackground = call.request.queryParameters["darkBlue"] ?: "#2F3640",
-            textColor = call.request.queryParameters["gray"] ?: "#808080",
-            sidebarColor = call.request.queryParameters["lightGray"] ?: "#F0F0F0"
+            colorPrincipal = call.request.queryParameters["colorPrincipal"] ?: "#B73A3A",
+            sectionBackground = call.request.queryParameters["sectionBackground"] ?: "#2F3640",
+            textColor = call.request.queryParameters["textColor"] ?: "#808080",
+            textColorSecondary = call.request.queryParameters["textColorSecondary"] ?: "#2F3640",
+            sidebarColor = call.request.queryParameters["sidebarColor"] ?: "#F0F0F0"
         )
         if (cv.isNullOrBlank()) {
             call.respond(
